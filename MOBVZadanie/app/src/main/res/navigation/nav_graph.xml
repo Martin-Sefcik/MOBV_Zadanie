@@ -18,10 +18,44 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="eu.mcomputing.mobv.zadanie.LoginFragment" />
+        android:name="eu.mcomputing.mobv.zadanie.LoginFragment">
+    <action
+        android:id="@+id/action_login_feed"
+        app:destination="@id/feedFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/signupFragment"
         android:name="eu.mcomputing.mobv.zadanie.SignupFragment">
+        <action
+            android:id="@+id/action_signup_feed"
+            app:destination="@id/feedFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="eu.mcomputing.mobv.zadanie.FeedFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="eu.mcomputing.mobv.zadanie.ProfileFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="eu.mcomputing.mobv.zadanie.MapFragment">
+    </fragment>
+
+    <action
+        android:id="@+id/action_to_feed"
+        app:destination="@id/feedFragment" />
+
+    <action
+        android:id="@+id/action_to_map"
+        app:destination="@id/mapFragment" />
+
+    <action
+        android:id="@+id/action_to_profile"
+        app:destination="@id/profileFragment" />
 </navigation>

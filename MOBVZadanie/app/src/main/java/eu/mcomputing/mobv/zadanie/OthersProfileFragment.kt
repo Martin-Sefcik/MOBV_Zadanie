@@ -7,17 +7,17 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-class FeedFragment : Fragment(R.layout.fragment_feed) {
+class OthersProfileFragment : Fragment(R.layout.fragment_others_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<BottomBar>(R.id.bottom_bar).setActive(BottomBar.FEED)
+        //view.findViewById<BottomBar>(R.id.bottom_bar).setActive(BottomBar.PROFILE)
 
-        view.findViewById<Button>(R.id.othersProfileButton).apply {
-            setOnClickListener {
-                findNavController().navigate(R.id.feed_to_othersProfile)
-            }
-        }
+//        view.findViewById<Button>(R.id.changePasswordButton).apply {
+//            setOnClickListener {
+//                findNavController().navigate(R.id.profile_to_changePassword)
+//            }
+//        }
 
     }
 }

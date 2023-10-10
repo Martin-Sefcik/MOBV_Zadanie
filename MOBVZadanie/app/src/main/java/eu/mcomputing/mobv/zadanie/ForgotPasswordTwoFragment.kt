@@ -7,15 +7,13 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-class FeedFragment : Fragment(R.layout.fragment_feed) {
+class ForgotPasswordTwoFragment : Fragment(R.layout.fragment_forgot_password_two) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<BottomBar>(R.id.bottom_bar).setActive(BottomBar.FEED)
-
-        view.findViewById<Button>(R.id.othersProfileButton).apply {
+        view.findViewById<Button>(R.id.confirmButton).apply {
             setOnClickListener {
-                findNavController().navigate(R.id.feed_to_othersProfile)
+                findNavController().navigate(R.id.forgetPasswordTwo_to_login)
             }
         }
 

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@+id/introFragment">
+    app:startDestination="@id/introFragment">
 
     <fragment
         android:id="@+id/introFragment"
@@ -20,26 +20,36 @@
         android:id="@+id/loginFragment"
         android:name="eu.mcomputing.mobv.zadanie.LoginFragment">
     <action
-        android:id="@+id/action_login_feed"
-        app:destination="@id/feedFragment" />
+        android:id="@+id/action_login_map"
+        app:destination="@id/mapFragment" />
+
+        <action
+            android:id="@+id/action_to_forgetPassword"
+            app:destination="@id/forgotPasswordFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/signupFragment"
         android:name="eu.mcomputing.mobv.zadanie.SignupFragment">
         <action
-            android:id="@+id/action_signup_feed"
-            app:destination="@id/feedFragment" />
+            android:id="@+id/action_signup_login"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/feedFragment"
         android:name="eu.mcomputing.mobv.zadanie.FeedFragment">
+        <action
+            android:id="@+id/feed_to_othersProfile"
+            app:destination="@id/othersProfileFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/profileFragment"
         android:name="eu.mcomputing.mobv.zadanie.ProfileFragment">
+        <action
+            android:id="@+id/profile_to_changePassword"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
 
     <fragment
@@ -58,4 +68,34 @@
     <action
         android:id="@+id/action_to_profile"
         app:destination="@id/profileFragment" />
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="eu.mcomputing.mobv.zadanie.ForgotPasswordFragment">
+        <action
+            android:id="@+id/action_to_forgetPasswordTwo"
+            app:destination="@id/forgotPasswordTwoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordTwoFragment"
+        android:name="eu.mcomputing.mobv.zadanie.ForgotPasswordTwoFragment">
+        <action
+            android:id="@+id/forgetPasswordTwo_to_login"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="eu.mcomputing.mobv.zadanie.ChangePasswordFragment">
+        <action
+            android:id="@+id/changePassword_to_profile"
+            app:destination="@id/profileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/othersProfileFragment"
+        android:name="eu.mcomputing.mobv.zadanie.OthersProfileFragment">
+    </fragment>
+
 </navigation>

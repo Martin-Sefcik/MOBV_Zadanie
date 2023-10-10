@@ -7,23 +7,6 @@ import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
-//class InputActivity : AppCompatActivity() {
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.fragment_signup)
-//
-//        val submitButton: Button = findViewById(R.id.submitButton)
-//        submitButton.setOnClickListener {
-//            // Logika po kliknutí na tlačidlo, napríklad na získanie textu z EditText
-//            val input_email: String = findViewById<EditText>(R.id.editText1).text.toString()
-//            val input_username: String = findViewById<EditText>(R.id.editText2).text.toString()
-//            val input_password: String = findViewById<EditText>(R.id.editText3).text.toString()
-//            val input_password_again: String = findViewById<EditText>(R.id.editText4).text.toString()
-//
-//            // Spracovanie dát alebo iné akcie
-//        }
-//    }
-//}
 
 class SignupFragment : Fragment(R.layout.fragment_signup) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +22,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             val input_password_again: String =
                 view.findViewById<EditText>(R.id.editText4).text.toString()
 
-            findNavController().navigate(R.id.action_signup_feed)
+            findNavController().navigate(R.id.action_signup_login)
 
             // Spracovanie dát alebo iné akcie
         }

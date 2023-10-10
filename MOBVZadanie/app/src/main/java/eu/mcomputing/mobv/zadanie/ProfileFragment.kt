@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -12,7 +13,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         view.findViewById<BottomBar>(R.id.bottom_bar).setActive(BottomBar.PROFILE)
 
-
+        view.findViewById<Button>(R.id.changePasswordButton).apply {
+            setOnClickListener {
+                findNavController().navigate(R.id.profile_to_changePassword)
+            }
+        }
 
     }
 }

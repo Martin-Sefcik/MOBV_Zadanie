@@ -38,8 +38,14 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 // Spracovanie dát alebo iné akcie
             }
         }
+
+        view.findViewById<Button>(R.id.forgetLoginButton).apply {
+            setOnClickListener {
+                findNavController().navigate(R.id.action_to_forgetPassword)
+            }
+        }
     }
     private fun login(username: String, password: String) {
-        findNavController().navigate(R.id.action_login_feed)
+        findNavController().navigate(R.id.action_login_map)
     }
 }

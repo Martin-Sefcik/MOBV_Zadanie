@@ -10,7 +10,7 @@
         android:id="@+id/tv_Profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My profile"
+        android:text="@string/my_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,7 +19,7 @@
         android:id="@+id/tv_Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My name"
+        android:text="@string/my_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_Profile" />
 
@@ -27,7 +27,7 @@
         android:id="@+id/tv_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My email"
+        android:text="@string/my_email"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
 
@@ -44,7 +44,7 @@
         android:id="@+id/trackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start/End"
+        android:text="@string/start_end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/photo" />
 
@@ -52,7 +52,7 @@
         android:id="@+id/label1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start time"
+        android:text="@string/start_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trackButton" />
 
@@ -60,7 +60,7 @@
         android:id="@+id/editText1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter start time"
+        android:hint="@string/enter_start_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label1" />
@@ -69,7 +69,7 @@
         android:id="@+id/label2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End time"
+        android:text="@string/end_time"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText1" />
 
@@ -77,7 +77,7 @@
         android:id="@+id/editText2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Enter end time"
+        android:hint="@string/enter_end_time"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label2" />
@@ -96,7 +96,7 @@
         android:id="@+id/changePasswordButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change password"
+        android:text="@string/change_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mapView" />
 

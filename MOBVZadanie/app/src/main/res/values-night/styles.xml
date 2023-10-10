@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextStyleNight">
+        <item name="android:textColor">#06750A</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+    <style name="LargeTextStyleNight" parent="TextStyleNight">
+        <item name="android:textSize">24sp</item>
+    </style>
+</resources>

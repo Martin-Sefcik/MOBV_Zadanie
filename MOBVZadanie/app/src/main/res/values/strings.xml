@@ -1,4 +1,38 @@
 <resources>
     <string name="app_name">MOBV Zadanie</string>
+    <string name="assignment">Assignment</string>
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
+    <string name="change_password">Change password</string>
+    <string name="old_password">Old password</string>
+    <string name="enter_old_password">Enter old password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="repeat_new_password">Repeat new password</string>
+    <string name="confirm">Confirm</string>
+    <string name="feed">Feed</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="email">Email</string>
+    <string name="enter_email">Enter email</string>
+    <string name="send">Send</string>
+    <string name="code">Code</string>
+    <string name="enter_the_code_from_the_email">Enter the code from the email</string>
+    <string name="new_password">New password</string>
+    <string name="username">Username</string>
+    <string name="enter_username">Enter username</string>
+    <string name="password">Password</string>
+    <string name="enter_password">Enter password</string>
+    <string name="another_profile">Another profile</string>
+    <string name="his_name">His name</string>
+    <string name="my_profile">My profile</string>
+    <string name="my_name">My name</string>
+    <string name="my_email">My email</string>
+    <string name="start_end">Start/End</string>
+    <string name="start_time">Start time</string>
+    <string name="end_time">End time</string>
+    <string name="enter_start_time">Enter start time</string>
+    <string name="enter_end_time">Enter end time</string>
+    <string name="repeat_password">Repeat password</string>
+
+
     <string name="mapbox_access_token"> pk.eyJ1IjoibWFydGluczAwIiwiYSI6ImNsbmM2cWZmNzBqcTYycW9hYW1qbDN0amwifQ.1qAQVixdbNfV8p4tN1syuA </string>
 </resources>

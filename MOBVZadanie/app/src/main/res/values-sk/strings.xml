@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">MOBV Zadanie</string>
+    <string name="assignment">Zadanie</string>
+    <string name="login">Prihlásenie</string>
+    <string name="signup">Registrácia</string>
+    <string name="change_password">Zmena hesla</string>
+    <string name="old_password">Staré heslo</string>
+    <string name="enter_old_password">Zadajte staré heslo</string>
+    <string name="enter_new_password">Zadajte nové heslo</string>
+    <string name="repeat_new_password">Zopakujte nové heslo</string>
+    <string name="confirm">Potvrdiť</string>
+    <string name="feed">Feed</string>
+    <string name="forgot_your_password">Zabudli ste heslo?</string>
+    <string name="email">Email</string>
+    <string name="enter_email">Zadajte email</string>
+    <string name="send">Odoslať</string>
+    <string name="code">Kód</string>
+    <string name="enter_the_code_from_the_email">Zadajte kód z emailu</string>
+    <string name="new_password">Nové heslo</string>
+    <string name="username">Užívateľské meno</string>
+    <string name="enter_username">Zadajte užívateľské meno</string>
+    <string name="password">Heslo</string>
+    <string name="enter_password">Zadajte heslo</string>
+    <string name="another_profile">Iný profil</string>
+    <string name="his_name">Jeho meno</string>
+    <string name="my_profile">Môj profil</string>
+    <string name="my_name">Moje meno</string>
+    <string name="my_email">Môj email</string>
+    <string name="start_end">Začiatok/Koniec</string>
+    <string name="start_time">Čas začiatku</string>
+    <string name="end_time">Čas konca</string>
+    <string name="enter_start_time">Zadajte čas začiatku</string>
+    <string name="enter_end_time">Zadajte čas konca</string>
+    <string name="repeat_password">Zopakuje heslo</string>
+
+    <string name="mapbox_access_token"> pk.eyJ1IjoibWFydGluczAwIiwiYSI6ImNsbmM2cWZmNzBqcTYycW9hYW1qbDN0amwifQ.1qAQVixdbNfV8p4tN1syuA </string>
+</resources>

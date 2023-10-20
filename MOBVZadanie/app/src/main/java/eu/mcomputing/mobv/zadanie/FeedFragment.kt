@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
+    private lateinit var viewModel: FeedViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -34,19 +35,22 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 //        ))
 
 
-        val newItems = mutableListOf<MyItem>()
-        for(i in 1..100){
-            newItems.add(MyItem(i,R.drawable.ic_profil,"novy text: $i"))
-        }
+//        val newItems = mutableListOf<MyItem>()
+//        for(i in 1..100){
+//            newItems.add(MyItem(i,R.drawable.ic_profil,"novy text: $i"))
+//        }
         //feedAdapter.updateItems(newItems)
 
-        val viewModel = ViewModelProvider(requireActivity())[FeedViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[FeedViewModel::class.java]
 
         viewModel.feed_items.observe(viewLifecycleOwner){new_items->
             feedAdapter.updateItems(new_items)
         }
 
-        viewModel.updateItems(newItems)
+        view.findViewById<Button>(R.id.btn_generate).setOnClickListener {
+            viewModel.updateItems()
+        }
+        //viewModel.updateItems(newItems)
 
     }
 }

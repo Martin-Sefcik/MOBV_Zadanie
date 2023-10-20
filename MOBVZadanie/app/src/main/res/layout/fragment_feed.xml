@@ -6,22 +6,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".IntroFragment">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/feed"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/feed_recyclerview"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_bar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        />
 
-    <Button
-        android:id="@+id/othersProfileButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/another_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
 
     <eu.mcomputing.mobv.zadanie.BottomBar
         android:id="@+id/bottom_bar"

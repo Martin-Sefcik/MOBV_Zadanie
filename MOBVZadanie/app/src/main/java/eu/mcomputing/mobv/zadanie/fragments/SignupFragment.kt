@@ -27,12 +27,12 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
         })[AuthViewModel::class.java]
 
         viewModel.registrationResult.observe(viewLifecycleOwner) {
-            if (it.second != null) {
+            if (it.isEmpty()) {
                 requireView().findNavController().navigate(R.id.action_signup_feed)
             } else {
                 Snackbar.make(
                     view.findViewById(R.id.submitButton),
-                    it.first,
+                    it,
                     Snackbar.LENGTH_SHORT
                 ).show()
             }

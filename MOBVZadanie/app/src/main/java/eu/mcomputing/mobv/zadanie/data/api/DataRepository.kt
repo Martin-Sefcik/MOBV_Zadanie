@@ -1,5 +1,6 @@
 package eu.mcomputing.mobv.zadanie.data.api
 
+import eu.mcomputing.mobv.zadanie.data.api.model.UserLoginRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserRegistration
 import eu.mcomputing.mobv.zadanie.data.model.User
 import java.io.IOException
@@ -59,6 +60,45 @@ class DataRepository private constructor(
             ex.printStackTrace()
         }
         return Pair("Fatal error. Failed to create user.", null)
+    }
+
+    suspend fun apiLoginUser(
+        username: String,
+        password: String
+    ): Pair<String, User?> {
+        if (username.isEmpty()) {
+            return Pair("Username can not be empty", null)
+        }
+        if (password.isEmpty()) {
+            return Pair("Password can not be empty", null)
+        }
+        try {
+            val response = service.loginUser(UserLoginRequest(username, password))
+            if (response.isSuccessful) {
+                response.body()?.let { json_response ->
+                    if (json_response.uid == "-1") {
+                        return Pair("Wrong password or username.", null)
+                    }
+                    return Pair(
+                        "",
+                        User(
+                            username,
+                            "",
+                            json_response.uid,
+                            json_response.access,
+                            json_response.refresh
+                        )
+                    )
+                }
+            }
+            return Pair("Failed to login user", null)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return Pair("Check internet connection. Failed to login user.", null)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return Pair("Fatal error. Failed to login user.", null)
     }
 
 }

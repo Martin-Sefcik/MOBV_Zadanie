@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".IntroFragment">
+    tools:context=".fragments.IntroFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/feed_recyclerview"
@@ -27,7 +27,7 @@
 
 
 
-    <eu.mcomputing.mobv.zadanie.BottomBar
+    <eu.mcomputing.mobv.zadanie.widgets.BottomBar
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

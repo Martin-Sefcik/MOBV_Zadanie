@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".IntroFragment">
+    tools:context=".fragments.IntroFragment">
 
     <com.mapbox.maps.MapView xmlns:mapbox="http://schemas.android.com/apk/res-auto"
         android:id="@+id/mapView"
@@ -19,7 +19,7 @@
         mapbox:layout_constraintEnd_toEndOf="parent" />
 
 
-    <eu.mcomputing.mobv.zadanie.BottomBar
+    <eu.mcomputing.mobv.zadanie.widgets.BottomBar
         android:id="@+id/bottom_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

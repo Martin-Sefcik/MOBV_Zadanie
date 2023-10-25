@@ -1,4 +1,4 @@
-package eu.mcomputing.mobv.zadanie
+package eu.mcomputing.mobv.zadanie.widgets
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
+import eu.mcomputing.mobv.zadanie.R
 
 class BottomBar : ConstraintLayout {
     private var active = -1

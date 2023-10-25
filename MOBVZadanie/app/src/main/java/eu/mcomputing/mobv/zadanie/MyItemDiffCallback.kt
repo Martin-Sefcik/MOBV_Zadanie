@@ -1,6 +1,7 @@
 package eu.mcomputing.mobv.zadanie
 
 import androidx.recyclerview.widget.DiffUtil
+import eu.mcomputing.mobv.zadanie.adapters.MyItem
 
 class MyItemDiffCallback(
     private val oldList: List<MyItem>,

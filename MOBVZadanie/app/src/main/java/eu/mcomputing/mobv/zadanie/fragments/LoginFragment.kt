@@ -1,4 +1,4 @@
-package eu.mcomputing.mobv.zadanie
+package eu.mcomputing.mobv.zadanie.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import eu.mcomputing.mobv.zadanie.R
 
 //class SignActivity : AppCompatActivity() {
 //    override fun onCreate(savedInstanceState: Bundle?) {

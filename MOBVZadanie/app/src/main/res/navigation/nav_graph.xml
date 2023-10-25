@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/introFragment"
-        android:name="eu.mcomputing.mobv.zadanie.IntroFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.IntroFragment">
 
         <action
             android:id="@+id/action_intro_to_login"
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="eu.mcomputing.mobv.zadanie.LoginFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.LoginFragment">
     <action
         android:id="@+id/action_login_map"
         app:destination="@id/mapFragment" />
@@ -30,15 +30,18 @@
 
     <fragment
         android:id="@+id/signupFragment"
-        android:name="eu.mcomputing.mobv.zadanie.SignupFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.SignupFragment">
         <action
             android:id="@+id/action_signup_login"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_signup_feed"
+            app:destination="@id/feedFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/feedFragment"
-        android:name="eu.mcomputing.mobv.zadanie.FeedFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.FeedFragment">
         <action
             android:id="@+id/feed_to_othersProfile"
             app:destination="@id/othersProfileFragment" />
@@ -46,7 +49,7 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="eu.mcomputing.mobv.zadanie.ProfileFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.ProfileFragment">
         <action
             android:id="@+id/profile_to_changePassword"
             app:destination="@id/changePasswordFragment" />
@@ -54,7 +57,7 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="eu.mcomputing.mobv.zadanie.MapFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.MapFragment">
     </fragment>
 
     <action
@@ -71,7 +74,7 @@
 
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="eu.mcomputing.mobv.zadanie.ForgotPasswordFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.ForgotPasswordFragment">
         <action
             android:id="@+id/action_to_forgetPasswordTwo"
             app:destination="@id/forgotPasswordTwoFragment" />
@@ -79,7 +82,7 @@
 
     <fragment
         android:id="@+id/forgotPasswordTwoFragment"
-        android:name="eu.mcomputing.mobv.zadanie.ForgotPasswordTwoFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.ForgotPasswordTwoFragment">
         <action
             android:id="@+id/forgetPasswordTwo_to_login"
             app:destination="@id/loginFragment" />
@@ -87,7 +90,7 @@
 
     <fragment
         android:id="@+id/changePasswordFragment"
-        android:name="eu.mcomputing.mobv.zadanie.ChangePasswordFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.ChangePasswordFragment">
         <action
             android:id="@+id/changePassword_to_profile"
             app:destination="@id/profileFragment" />
@@ -95,7 +98,7 @@
 
     <fragment
         android:id="@+id/othersProfileFragment"
-        android:name="eu.mcomputing.mobv.zadanie.OthersProfileFragment">
+        android:name="eu.mcomputing.mobv.zadanie.fragments.OthersProfileFragment">
     </fragment>
 
 </navigation>

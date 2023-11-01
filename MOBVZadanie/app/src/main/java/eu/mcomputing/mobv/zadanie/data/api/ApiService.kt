@@ -3,6 +3,7 @@ package eu.mcomputing.mobv.zadanie.data.api
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import eu.mcomputing.mobv.zadanie.config.AppConfig
+import eu.mcomputing.mobv.zadanie.data.api.model.LoginResponse
 import eu.mcomputing.mobv.zadanie.data.api.model.RegistrationResponse
 import eu.mcomputing.mobv.zadanie.data.api.model.UserLoginRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserRegistration
@@ -21,7 +22,7 @@ interface ApiService {
 
     @Headers("x-apikey: ${AppConfig.API_KEY}")
     @POST("user/login.php")
-    suspend fun loginUser(@Body userInfo: UserLoginRequest): Response<RegistrationResponse>
+    suspend fun loginUser(@Body userInfo: UserLoginRequest): Response<LoginResponse>
 
     companion object {
         fun create(): ApiService {

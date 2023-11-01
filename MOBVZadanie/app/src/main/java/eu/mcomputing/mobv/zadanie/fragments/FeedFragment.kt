@@ -1,6 +1,7 @@
 package eu.mcomputing.mobv.zadanie.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
@@ -11,29 +12,46 @@ import eu.mcomputing.mobv.zadanie.widgets.BottomBar
 import eu.mcomputing.mobv.zadanie.viewmodels.FeedViewModel
 import eu.mcomputing.mobv.zadanie.R
 import eu.mcomputing.mobv.zadanie.adapters.FeedAdapter
+import eu.mcomputing.mobv.zadanie.databinding.FragmentFeedBinding
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
     private lateinit var viewModel: FeedViewModel
+    private var binding: FragmentFeedBinding? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(requireActivity())[FeedViewModel::class.java]
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<BottomBar>(R.id.bottom_bar).setActive(BottomBar.FEED)
+        binding = FragmentFeedBinding.bind(view).apply {
+            lifecycleOwner = viewLifecycleOwner
+        }.also { bnd ->
+            bnd.bottomBar.setActive(BottomBar.FEED)
 
-//        view.findViewById<Button>(R.id.othersProfileButton).apply {
-//            setOnClickListener {
-//                findNavController().navigate(R.id.feed_to_othersProfile)
-//            }
-//        }
+            bnd.feedRecyclerview.layoutManager = LinearLayoutManager(context)
+            val feedAdapter = FeedAdapter()
+            bnd.feedRecyclerview.adapter = feedAdapter
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.feed_recyclerview)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        val feedAdapter = FeedAdapter()
-        recyclerView.adapter = feedAdapter
-//        feedAdapter.updateItems(listOf(
-//            MyItem(1, R.drawable.ic_profil,"Prvy"),
-//            MyItem(2, R.drawable.ic_profil,"Druhy"),
-//            MyItem(3, R.drawable.ic_profil,"Treti"),
-//        ))
+            // Pozorovanie zmeny hodnoty
+            viewModel.feed_items.observe(viewLifecycleOwner) { items ->
+                Log.d("FeedFragment", "nove hodnoty $items")
+                feedAdapter.updateItems(items)
+            }
+
+            bnd.btnGenerate.setOnClickListener {
+                viewModel.updateItems()
+            }
+        }
+
+//        view.findViewById<BottomBar>(R.id.bottom_bar).setActive(BottomBar.FEED)
+
+//        val recyclerView = view.findViewById<RecyclerView>(R.id.feed_recyclerview)
+//        recyclerView.layoutManager = LinearLayoutManager(context)
+//        val feedAdapter = FeedAdapter()
+//        recyclerView.adapter = feedAdapter
 
 
 //        val newItems = mutableListOf<MyItem>()
@@ -42,15 +60,15 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 //        }
         //feedAdapter.updateItems(newItems)
 
-        viewModel = ViewModelProvider(requireActivity())[FeedViewModel::class.java]
+//        viewModel = ViewModelProvider(requireActivity())[FeedViewModel::class.java]
 
-        viewModel.feed_items.observe(viewLifecycleOwner){new_items->
-            feedAdapter.updateItems(new_items)
-        }
+//        viewModel.feed_items.observe(viewLifecycleOwner){new_items->
+//            feedAdapter.updateItems(new_items)
+//        }
 
-        view.findViewById<Button>(R.id.btn_generate).setOnClickListener {
-            viewModel.updateItems()
-        }
+//        view.findViewById<Button>(R.id.btn_generate).setOnClickListener {
+//            viewModel.updateItems()
+//        }
         //viewModel.updateItems(newItems)
 
     }

@@ -25,7 +25,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
         viewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return ProfileViewModel(DataRepository.getInstance()) as T
+                return ProfileViewModel(DataRepository.getInstance(requireContext())) as T
             }
         })[ProfileViewModel::class.java]
     }
@@ -41,7 +41,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             bnd.loadProfileBtn.setOnClickListener {
                 val user = PreferenceData.getInstance().getUser(requireContext())
                 user?.let {
-                    viewModel.loadUser(it.id, it.id, it.access, it.refresh)
+                    viewModel.loadUser(it.id)
                 }
             }
             bnd.logoutBtn.setOnClickListener {
@@ -64,11 +64,11 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         }
 
-        viewModel.userResult.observe(viewLifecycleOwner) {
-            it?.let { profile ->
-                PreferenceData.getInstance().putUser(requireContext(), profile)
-            }
-        }
+//        viewModel.userResult.observe(viewLifecycleOwner) {
+//            it?.let { profile ->
+//                PreferenceData.getInstance().putUser(requireContext(), profile)
+//            }
+//        }
 
     }
 }

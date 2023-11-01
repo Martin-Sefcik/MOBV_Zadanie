@@ -2,13 +2,10 @@ package eu.mcomputing.mobv.zadanie.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import eu.mcomputing.mobv.zadanie.R
 import eu.mcomputing.mobv.zadanie.data.PreferenceData
@@ -26,7 +23,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
 
         viewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return AuthViewModel(DataRepository.getInstance()) as T
+                return AuthViewModel(DataRepository.getInstance(requireContext())) as T
             }
         })[AuthViewModel::class.java]
     }
@@ -38,6 +35,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             lifecycleOwner = viewLifecycleOwner
             model = viewModel
         }.also { bnd ->
+
             viewModel.registrationResult.observe(viewLifecycleOwner) {
                 if (it.isNotEmpty()) {
                     Snackbar.make(
@@ -47,14 +45,14 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                     ).show()
                 }
             }
+
             viewModel.userResult.observe(viewLifecycleOwner) {
                 it?.let { user ->
                     PreferenceData.getInstance().putUser(requireContext(), user)
                     requireView().findNavController().navigate(R.id.action_signup_feed)
                 } ?: PreferenceData.getInstance().putUser(requireContext(), null)
             }
-
         }
-
     }
+
 }

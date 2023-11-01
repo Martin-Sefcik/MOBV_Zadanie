@@ -34,19 +34,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         binding = FragmentLoginBinding.bind(view).apply {
             lifecycleOwner = viewLifecycleOwner
+            model = viewModel
         }.also { bnd ->
-            bnd.submitButton.apply {
-                setOnClickListener {
-                    val username: String = bnd.editText1.text.toString()
-                    val password: String = bnd.editText2.text.toString()
-                    login(username, password)
-                }
-            }
-            bnd.forgetLoginButton.apply {
-                setOnClickListener{
-                    findNavController().navigate(R.id.action_to_forgetPassword)
-                }
-            }
             viewModel.loginResult.observe(viewLifecycleOwner) {
                 if (it.isEmpty()) {
                     requireView().findNavController().navigate(R.id.action_login_feed)
@@ -58,14 +47,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     ).show()
                 }
             }
-
-
-
-//            view.findViewById<Button>(R.id.forgetLoginButton).apply {
-//                setOnClickListener {
-//                    findNavController().navigate(R.id.action_to_forgetPassword)
-//                }
-//            }
+            bnd.forgetLoginButton.apply {
+                setOnClickListener{
+                    findNavController().navigate(R.id.action_to_forgetPassword)
+                }
+            }
 
         }
     }
@@ -74,7 +60,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         super.onDestroyView()
     }
 
-    private fun login(username: String, password: String) {
-        viewModel.loginUser(username, password)
-    }
+//    private fun login(username: String, password: String) {
+//        viewModel.loginUser(username, password)
+//    }
 }

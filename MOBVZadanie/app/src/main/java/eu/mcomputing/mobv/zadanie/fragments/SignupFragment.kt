@@ -47,21 +47,12 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                     ).show()
                 }
             }
-//                if (it.isEmpty()) {
-//                    requireView().findNavController().navigate(R.id.action_signup_feed)
-//                } else {
-//                    Snackbar.make(
-//                        bnd.submitButton,
-//                        it,
-//                        Snackbar.LENGTH_SHORT
-//                    ).show()
-//                }
-                viewModel.userResult.observe(viewLifecycleOwner) {
-                    it?.let { user ->
-                        PreferenceData.getInstance().putUser(requireContext(), user)
-                        requireView().findNavController().navigate(R.id.action_signup_feed)
-                    } ?: PreferenceData.getInstance().putUser(requireContext(), null)
-                }
+            viewModel.userResult.observe(viewLifecycleOwner) {
+                it?.let { user ->
+                    PreferenceData.getInstance().putUser(requireContext(), user)
+                    requireView().findNavController().navigate(R.id.action_signup_feed)
+                } ?: PreferenceData.getInstance().putUser(requireContext(), null)
+            }
 
         }
 

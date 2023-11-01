@@ -45,15 +45,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         Snackbar.LENGTH_SHORT
                     ).show()
                 }
-//                if (it.isEmpty()) {
-//                    requireView().findNavController().navigate(R.id.action_login_feed)
-//                } else {
-//                    Snackbar.make(
-//                        bnd.submitButton,
-//                        it,
-//                        Snackbar.LENGTH_SHORT
-//                    ).show()
-//                }
             }
             viewModel.userResult.observe(viewLifecycleOwner) {
                 it?.let { user ->

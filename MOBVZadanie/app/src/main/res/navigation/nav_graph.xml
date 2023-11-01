@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_intro_to_signup"
             app:destination="@id/signupFragment" />
+        <action
+            android:id="@+id/action_intro_to_feed"
+            app:destination="@id/feedFragment" />
     </fragment>
 
     <fragment
@@ -56,6 +59,9 @@
         <action
             android:id="@+id/profile_to_changePassword"
             app:destination="@id/changePasswordFragment" />
+        <action
+            android:id="@+id/action_profile_intro"
+            app:destination="@id/introFragment" />
     </fragment>
 
     <fragment

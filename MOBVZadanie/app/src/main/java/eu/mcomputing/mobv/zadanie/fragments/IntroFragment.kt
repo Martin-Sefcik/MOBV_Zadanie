@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import eu.mcomputing.mobv.zadanie.R
+import eu.mcomputing.mobv.zadanie.data.PreferenceData
 import eu.mcomputing.mobv.zadanie.databinding.FragmentIntroBinding
 
 class IntroFragment : Fragment(R.layout.fragment_intro) {
@@ -28,18 +29,10 @@ class IntroFragment : Fragment(R.layout.fragment_intro) {
             }
         }
 
-        // Kód z Activity
-//        view.findViewById<Button>(R.id.button1).apply {
-//            setOnClickListener {
-//                it.findNavController().navigate(R.id.action_intro_to_signup)
-//            }
-//        }
-//
-//        view.findViewById<Button>(R.id.button2).apply {
-//            setOnClickListener {
-//                it.findNavController().navigate(R.id.action_intro_to_login)
-//            }
-//        }
+        val user = PreferenceData.getInstance().getUser(requireContext())
+        if (user != null) {
+            requireView().findNavController().navigate(R.id.action_intro_to_feed)
+        }
     }
     override fun onDestroyView() {
         binding = null

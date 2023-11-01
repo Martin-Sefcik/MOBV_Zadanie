@@ -5,7 +5,9 @@
     tools:context=".fragments.IntroFragment">
 
     <data>
-
+        <variable
+            name="model"
+            type="eu.mcomputing.mobv.zadanie.viewmodels.ProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,7 +27,7 @@
             android:id="@+id/tv_Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/my_name"
+            android:text="@{model.userResult.username}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_Profile" />
 
@@ -33,7 +35,7 @@
             android:id="@+id/tv_Email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/my_email"
+            android:text="@{model.userResult.email}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
 
@@ -97,6 +99,22 @@
             mapbox:mapbox_cameraTargetLat="40.7128"
             mapbox:mapbox_cameraTargetLng="-74.0060"
             mapbox:mapbox_cameraZoom="9.0" />
+
+        <Button
+            android:id="@+id/load_profile_btn"
+            android:text="load profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <Button
+            android:id="@+id/logout_btn"
+            android:text="Log out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/load_profile_btn" />
 
         <Button
             android:id="@+id/changePasswordButton"

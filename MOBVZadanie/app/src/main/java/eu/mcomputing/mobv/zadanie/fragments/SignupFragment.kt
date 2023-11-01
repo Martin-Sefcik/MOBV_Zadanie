@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import eu.mcomputing.mobv.zadanie.R
+import eu.mcomputing.mobv.zadanie.data.PreferenceData
 import eu.mcomputing.mobv.zadanie.data.api.DataRepository
 import eu.mcomputing.mobv.zadanie.databinding.FragmentSignupBinding
 import eu.mcomputing.mobv.zadanie.viewmodels.AuthViewModel
@@ -38,9 +39,7 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
             model = viewModel
         }.also { bnd ->
             viewModel.registrationResult.observe(viewLifecycleOwner) {
-                if (it.isEmpty()) {
-                    requireView().findNavController().navigate(R.id.action_signup_feed)
-                } else {
+                if (it.isNotEmpty()) {
                     Snackbar.make(
                         bnd.submitButton,
                         it,
@@ -48,15 +47,22 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                     ).show()
                 }
             }
-//            bnd.submitButton.apply {
-//                setOnClickListener {
-//                    viewModel.registerUser(
-//                        bnd.editText2.text.toString(),
-//                        bnd.editText1.text.toString(),
-//                        bnd.editText3.text.toString()
-//                    )
+//                if (it.isEmpty()) {
+//                    requireView().findNavController().navigate(R.id.action_signup_feed)
+//                } else {
+//                    Snackbar.make(
+//                        bnd.submitButton,
+//                        it,
+//                        Snackbar.LENGTH_SHORT
+//                    ).show()
 //                }
-//            }
+                viewModel.userResult.observe(viewLifecycleOwner) {
+                    it?.let { user ->
+                        PreferenceData.getInstance().putUser(requireContext(), user)
+                        requireView().findNavController().navigate(R.id.action_signup_feed)
+                    } ?: PreferenceData.getInstance().putUser(requireContext(), null)
+                }
+
         }
 
     }

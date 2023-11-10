@@ -124,6 +124,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
+        <TextView
+            android:id="@+id/location_label"
+            android:text="Share my location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/location_switch"
+            app:layout_constraintBottom_toBottomOf="@id/location_switch"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_margin="16dp"
+            android:checked="@={model.sharingLocation}"
+            android:id="@+id/location_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/changePasswordButton"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <eu.mcomputing.mobv.zadanie.widgets.BottomBar
             android:id="@+id/bottom_bar"
             android:layout_width="match_parent"

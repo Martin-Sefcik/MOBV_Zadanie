@@ -15,10 +15,29 @@ import eu.mcomputing.mobv.zadanie.data.PreferenceData
 import eu.mcomputing.mobv.zadanie.data.api.DataRepository
 import eu.mcomputing.mobv.zadanie.databinding.FragmentProfileBinding
 import eu.mcomputing.mobv.zadanie.viewmodels.ProfileViewModel
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var viewModel: ProfileViewModel
     private var binding: FragmentProfileBinding? = null
+    private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+
+    val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (!isGranted) {
+                viewModel.sharingLocation.postValue(false)
+            }
+        }
+
+    fun hasPermissions(context: Context) = PERMISSIONS_REQUIRED.all {
+        ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +79,25 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             bnd.changePasswordButton.apply {
                 setOnClickListener {
                     findNavController().navigate(R.id.profile_to_changePassword)
+                }
+            }
+            viewModel.sharingLocation.postValue(
+                PreferenceData.getInstance().getSharing(requireContext())
+            )
+            viewModel.sharingLocation.observe(viewLifecycleOwner) {
+                it?.let {
+                    if (it) {
+                        if (!hasPermissions(requireContext())) {
+                            viewModel.sharingLocation.postValue(false)
+                            requestPermissionLauncher.launch(
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                            )
+                        } else {
+                            PreferenceData.getInstance().putSharing(requireContext(), true)
+                        }
+                    } else {
+                        PreferenceData.getInstance().putSharing(requireContext(), false)
+                    }
                 }
             }
         }

@@ -7,33 +7,34 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import eu.mcomputing.mobv.zadanie.MyItemDiffCallback
+import eu.mcomputing.mobv.zadanie.utils.MyItemDiffCallback
 import eu.mcomputing.mobv.zadanie.R
+import eu.mcomputing.mobv.zadanie.data.db.entities.UserEntity
 
-data class MyItem(val id: Int, val imageResource: Int, val text: String){
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as MyItem
-
-        if (id != other.id) return false
-        if (imageResource != other.imageResource) return false
-        if (text != other.text) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + imageResource
-        result = 31 * result + text.hashCode()
-        return result
-    }
-}
+//data class MyItem(val id: Int, val imageResource: Int, val text: String){
+//    override fun equals(other: Any?): Boolean {
+//        if (this === other) return true
+//        if (javaClass != other?.javaClass) return false
+//
+//        other as MyItem
+//
+//        if (id != other.id) return false
+//        if (imageResource != other.imageResource) return false
+//        if (text != other.text) return false
+//
+//        return true
+//    }
+//
+//    override fun hashCode(): Int {
+//        var result = id
+//        result = 31 * result + imageResource
+//        result = 31 * result + text.hashCode()
+//        return result
+//    }
+//}
 
 class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
-    private var items: List<MyItem> = listOf()
+    private var items: List<UserEntity> = listOf()
 
     // ViewHolder poskytuje odkazy na zobrazenia v každej položke
     class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -47,15 +48,15 @@ class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
 
     // Táto metóda prepojí dáta s ViewHolderom
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
-        holder.itemView.findViewById<ImageView>(R.id.item_image)
-            .setImageResource(items[position].imageResource)
-        holder.itemView.findViewById<TextView>(R.id.item_text).text = items[position].text
+//        holder.itemView.findViewById<ImageView>(R.id.item_image)
+//            .setImageResource(items[position].imageResource)
+        holder.itemView.findViewById<TextView>(R.id.item_text).text = items[position].name
     }
 
     // Vracia počet položiek v zozname
     override fun getItemCount() = items.size
 
-    fun updateItems(newItems: List<MyItem>) {
+    fun updateItems(newItems: List<UserEntity>) {
         val diffCallback = MyItemDiffCallback(items, newItems)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
 

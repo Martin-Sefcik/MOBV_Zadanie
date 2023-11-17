@@ -2,17 +2,14 @@ package eu.mcomputing.mobv.zadanie.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import eu.mcomputing.mobv.zadanie.R
 import eu.mcomputing.mobv.zadanie.data.PreferenceData
-import eu.mcomputing.mobv.zadanie.data.api.DataRepository
+import eu.mcomputing.mobv.zadanie.data.DataRepository
 import eu.mcomputing.mobv.zadanie.databinding.FragmentLoginBinding
 import eu.mcomputing.mobv.zadanie.viewmodels.AuthViewModel
 

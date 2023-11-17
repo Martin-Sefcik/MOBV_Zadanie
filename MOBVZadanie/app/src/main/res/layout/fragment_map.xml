@@ -21,8 +21,6 @@
             mapbox:layout_constraintEnd_toEndOf="parent"
             mapbox:layout_constraintStart_toStartOf="parent"
             mapbox:layout_constraintTop_toTopOf="parent"
-            mapbox:mapbox_cameraTargetLat="48.148598"
-            mapbox:mapbox_cameraTargetLng="17.107746"
             mapbox:mapbox_cameraZoom="9.0" />
 
         <ImageView

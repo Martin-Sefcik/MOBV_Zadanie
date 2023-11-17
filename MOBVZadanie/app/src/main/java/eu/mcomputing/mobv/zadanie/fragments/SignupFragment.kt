@@ -9,7 +9,7 @@ import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import eu.mcomputing.mobv.zadanie.R
 import eu.mcomputing.mobv.zadanie.data.PreferenceData
-import eu.mcomputing.mobv.zadanie.data.api.DataRepository
+import eu.mcomputing.mobv.zadanie.data.DataRepository
 import eu.mcomputing.mobv.zadanie.databinding.FragmentSignupBinding
 import eu.mcomputing.mobv.zadanie.viewmodels.AuthViewModel
 

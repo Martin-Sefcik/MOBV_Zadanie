@@ -111,6 +111,7 @@ class MapFragment : Fragment() {
 
 
     private fun initLocationComponent() {
+        Log.d("MapFragment","initLocationComponent")
         val locationComponentPlugin = binding.mapView.location
         locationComponentPlugin.updateSettings {
             this.enabled = true

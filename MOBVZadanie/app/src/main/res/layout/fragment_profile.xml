@@ -135,7 +135,6 @@
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_margin="16dp"
-            android:checked="@={model.sharingLocation}"
             android:id="@+id/location_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

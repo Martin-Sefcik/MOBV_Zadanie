@@ -1,6 +1,9 @@
 package eu.mcomputing.mobv.zadanie.utils
 
+import android.view.View
+import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.DiffUtil
+import com.google.android.material.snackbar.Snackbar
 import eu.mcomputing.mobv.zadanie.data.db.entities.UserEntity
 
 class MyItemDiffCallback(
@@ -14,5 +17,19 @@ class MyItemDiffCallback(
     }
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
         return oldList[oldItemPosition] == newList[newItemPosition]
+    }
+}
+
+@BindingAdapter(
+    "showTextToast"
+)
+fun applyShowTextToast(
+    view: View,
+    message: Evento<String>?
+) {
+    message?.getContentIfNotHandled()?.let {
+        if (it.isNotBlank()) {
+            Snackbar.make(view, it, Snackbar.LENGTH_SHORT).show()
+        }
     }
 }

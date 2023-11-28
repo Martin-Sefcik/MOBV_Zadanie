@@ -2,7 +2,9 @@ package eu.mcomputing.mobv.zadanie.fragments
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -18,7 +20,7 @@ import eu.mcomputing.mobv.zadanie.databinding.FragmentFeedBinding
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
     private lateinit var viewModel: FeedViewModel
-    private var binding: FragmentFeedBinding? = null
+    private lateinit var binding: FragmentFeedBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +31,22 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
             }
         })[FeedViewModel::class.java]
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = FragmentFeedBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding = FragmentFeedBinding.bind(view).apply {
+        binding.apply {
             lifecycleOwner = viewLifecycleOwner
+            model = viewModel
         }.also { bnd ->
             bnd.bottomBar.setActive(BottomBar.FEED)
 
@@ -58,31 +71,6 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 //                viewModel.updateItems()
 //            }
         }
-
-//        view.findViewById<BottomBar>(R.id.bottom_bar).setActive(BottomBar.FEED)
-
-//        val recyclerView = view.findViewById<RecyclerView>(R.id.feed_recyclerview)
-//        recyclerView.layoutManager = LinearLayoutManager(context)
-//        val feedAdapter = FeedAdapter()
-//        recyclerView.adapter = feedAdapter
-
-
-//        val newItems = mutableListOf<MyItem>()
-//        for(i in 1..100){
-//            newItems.add(MyItem(i,R.drawable.ic_profil,"novy text: $i"))
-//        }
-        //feedAdapter.updateItems(newItems)
-
-//        viewModel = ViewModelProvider(requireActivity())[FeedViewModel::class.java]
-
-//        viewModel.feed_items.observe(viewLifecycleOwner){new_items->
-//            feedAdapter.updateItems(new_items)
-//        }
-
-//        view.findViewById<Button>(R.id.btn_generate).setOnClickListener {
-//            viewModel.updateItems()
-//        }
-        //viewModel.updateItems(newItems)
 
     }
 }

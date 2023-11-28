@@ -124,19 +124,6 @@ class DataRepository private constructor(
                 }
             }
 
-//            if (response.isSuccessful) {
-//                response.body()?.let {
-//                    val user = User(it.name, "", it.id, "", "", it.photo)
-//                    cache.insertUserItems(
-//                        listOf(
-//                            UserEntity(
-//                                user.id, user.username, "", 0.0,0.0,0.0,""
-//                            )
-//                        )
-//                    )
-//                    return Pair("", user)
-//                }
-//            }
             return Pair("Failed to load user", null)
         } catch (ex: IOException) {
             ex.printStackTrace()
@@ -152,11 +139,11 @@ class DataRepository private constructor(
             val response = service.listGeofence()
 
             if (response.isSuccessful) {
-                response.body()?.let {
+                response.body()?.list?.let {
                     val users  = it.map {
                         UserEntity(
                             it.uid, it.name, it.updated,
-                            it.lat, it.lon, it.radius, it.photo
+                            0.0, 0.0, it.radius, it.photo
                         )
                     }
 
@@ -173,7 +160,7 @@ class DataRepository private constructor(
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
-        return "Fatal error. Failed to load user."
+        return "Fatal error apiGeofenceUsers. Failed to load user."
     }
 
     fun getUsers() = cache.getUsers()

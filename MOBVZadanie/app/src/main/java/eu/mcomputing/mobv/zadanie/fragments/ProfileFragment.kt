@@ -134,33 +134,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
 
-//            viewModel.sharingLocation.postValue(
-//                PreferenceData.getInstance().getSharing(requireContext())
-//            )
-//            viewModel.sharingLocation.observe(viewLifecycleOwner) {
-//                it?.let {
-//                    if (it) {
-//                        if (!hasPermissions(requireContext())) {
-//                            viewModel.sharingLocation.postValue(false)
-//                            requestPermissionLauncher.launch(
-//                                Manifest.permission.ACCESS_FINE_LOCATION
-//                            )
-//                        } else {
-//                            PreferenceData.getInstance().putSharing(requireContext(), true)
-//                        }
-//                    } else {
-//                        PreferenceData.getInstance().putSharing(requireContext(), false)
-//                    }
-//                }
-//            }
-
         }
-
-//        viewModel.userResult.observe(viewLifecycleOwner) {
-//            it?.let { profile ->
-//                PreferenceData.getInstance().putUser(requireContext(), profile)
-//            }
-//        }
 
     }
 

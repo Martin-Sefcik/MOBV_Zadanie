@@ -29,19 +29,16 @@ interface ApiService {
     @POST("user/create.php")
     suspend fun registerUser(@Body userInfo: UserRegistrationRequest): Response<RegistrationResponse>
 
-    //@Headers("x-apikey: ${AppConfig.API_KEY}")
-    @POST("user/login.php")
+   @POST("user/login.php")
     suspend fun loginUser(@Body userInfo: UserLoginRequest): Response<LoginResponse>
 
     @GET("user/get.php")
     suspend fun getUser(
-        //@HeaderMap header: Map<String, String>,
         @Query("id") id: String
     ): Response<UserResponse>
 
     @POST("user/refresh.php")
     suspend fun refreshToken(
-        //@HeaderMap header: Map<String, String>,
         @Body refreshInfo: RefreshTokenRequest
     ): Response<RefreshTokenResponse>
 
@@ -51,7 +48,7 @@ interface ApiService {
     ): Call<RefreshTokenResponse>
 
     @GET("geofence/list.php")
-    suspend fun listGeofence(): Response<List<GeofenceListResponse>>
+    suspend fun listGeofence(): Response<GeofenceListResponse>
 
     @POST("geofence/update.php")
     suspend fun updateGeofence(@Body body: GeofenceUpdateRequest): Response<GeofenceUpdateResponse>

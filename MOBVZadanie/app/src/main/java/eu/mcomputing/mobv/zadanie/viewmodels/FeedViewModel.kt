@@ -35,15 +35,3 @@ class FeedViewModel(private val repository: DataRepository) : ViewModel() {
         }
     }
 }
-
-
-
-//suspend fun fetchRandomNumber(): List<MyItem> {
-//    delay(5000)
-//    val items = mutableListOf<MyItem>()
-//    for (i in 1..100) {
-//
-//        items.add(MyItem(i, R.drawable.ic_profil, "Text ${(0..100).random()}"))
-//    }
-//    return items
-//}

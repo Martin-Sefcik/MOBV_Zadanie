@@ -51,5 +51,7 @@ class AuthViewModel(private val dataRepository: DataRepository) : ViewModel() {
         password.value = ""
         email.value = ""
         repeat_password.value = ""
+
+        _userResult.value = null
     }
 }

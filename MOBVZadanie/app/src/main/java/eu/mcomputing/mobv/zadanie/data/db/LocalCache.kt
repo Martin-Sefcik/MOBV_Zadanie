@@ -9,7 +9,7 @@ class LocalCache(private val dao: DbDao) {
     }
 
     suspend fun insertUserItems(items: List<UserEntity>) {
-        dao.insertUserItems(items)
+        dao.deleteUserItems()
         if (items.isNotEmpty()) {
             dao.insertUserItems(items)
         }
@@ -20,6 +20,8 @@ class LocalCache(private val dao: DbDao) {
     }
 
     fun getUsers(): LiveData<List<UserEntity>?> = dao.getUsers()
+
+    suspend fun getUsersList(): List<UserEntity>? = dao.getUsersList()
 
     suspend fun deleteUserItems() {
         dao.deleteUserItems()

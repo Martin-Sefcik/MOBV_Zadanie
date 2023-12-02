@@ -129,7 +129,7 @@ class MapFragment : Fragment() {
     }
 
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
-        Log.d("MapFragment", "poloha je $it")
+//        Log.d("MapFragment", "poloha je $it")
         refreshLocation(it)
     }
 

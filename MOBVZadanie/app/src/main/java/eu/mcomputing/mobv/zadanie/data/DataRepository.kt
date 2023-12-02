@@ -165,6 +165,8 @@ class DataRepository private constructor(
 
     fun getUsers() = cache.getUsers()
 
+    suspend fun getUsersList() = cache.getUsersList()
+
     suspend fun logoutUser() = cache.logoutUser()
 
     suspend fun insertGeofence(item: GeofenceEntity) {

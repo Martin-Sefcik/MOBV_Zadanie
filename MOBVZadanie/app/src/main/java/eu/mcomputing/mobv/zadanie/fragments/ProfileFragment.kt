@@ -28,9 +28,17 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.LocationServices
 import android.location.Location
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.location.GeofencingRequest
 import eu.mcomputing.mobv.zadanie.broadcastReceivers.GeofenceBroadcastReceiver
 import eu.mcomputing.mobv.zadanie.viewmodels.AuthViewModel
+import eu.mcomputing.mobv.zadanie.workers.MyWorker
+import java.util.concurrent.TimeUnit
+import androidx.work.Constraints
+
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var viewModel: ProfileViewModel
@@ -38,13 +46,23 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var binding: FragmentProfileBinding
 
     private val PERMISSIONS_REQUIRED = when {
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+        Build.VERSION.SDK_INT >= 33 -> { // android 13
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+        }
+
+        Build.VERSION.SDK_INT >= 29 -> { // android 10
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
             )
         }
+
         else -> {
             arrayOf(
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -194,7 +212,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 requireActivity(),
                 0,
                 intent,
-                PendingIntent.FLAG_IMMUTABLE
+//                PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_MUTABLE
+
+                PendingIntent.FLAG_MUTABLE
 //                PendingIntent.FLAG_UPDATE_CURRENT
             )
 
@@ -203,6 +223,7 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 // Geofences boli úspešne pridané
                 Log.d("ProfileFragment", "geofence vytvoreny")
                 viewModel.updateGeofence(location.latitude, location.longitude, 100.0)
+                runWorker()
             }
             addOnFailureListener {
                 // Chyba pri pridaní geofences
@@ -218,6 +239,30 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         val geofencingClient = LocationServices.getGeofencingClient(requireActivity())
         geofencingClient.removeGeofences(listOf("my-geofence"))
         viewModel.removeGeofence()
+        cancelWorker()
+    }
 
+    private fun runWorker() {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        val repeatingRequest = PeriodicWorkRequestBuilder<MyWorker>(
+            15, TimeUnit.MINUTES, // repeatInterval
+            5, TimeUnit.MINUTES // flexInterval
+        )
+            .setConstraints(constraints)
+            .addTag("myworker-tag")
+            .build()
+
+        WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
+            "myworker",
+            ExistingPeriodicWorkPolicy.KEEP, // or REPLACE
+            repeatingRequest
+        )
+    }
+
+    private fun cancelWorker() {
+        WorkManager.getInstance(requireContext()).cancelUniqueWork("myworker")
     }
 }

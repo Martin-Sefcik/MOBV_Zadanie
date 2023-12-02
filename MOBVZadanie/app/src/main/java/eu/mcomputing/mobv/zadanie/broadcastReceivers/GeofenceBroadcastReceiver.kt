@@ -79,7 +79,7 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
         val intent = Intent(context, GeofenceBroadcastReceiver::class.java)
         val geofencePendingIntent =
-            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_MUTABLE)
 
         if (ActivityCompat.checkSelfPermission(
                 context,

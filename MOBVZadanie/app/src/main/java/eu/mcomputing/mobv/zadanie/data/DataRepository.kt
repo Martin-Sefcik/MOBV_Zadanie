@@ -3,6 +3,7 @@ package eu.mcomputing.mobv.zadanie.data
 import android.content.Context
 import eu.mcomputing.mobv.zadanie.data.api.ApiService
 import eu.mcomputing.mobv.zadanie.data.api.model.GeofenceUpdateRequest
+import eu.mcomputing.mobv.zadanie.data.api.model.UserChangePasswordRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserLoginRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserRegistrationRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserResetPasswordRequest
@@ -150,7 +151,10 @@ class DataRepository private constructor(
             if (response.isSuccessful) {
                 response.body()?.let {
                     if (it.status == "success")
-                        return Pair(it.status + ". Check your email!", "Successful. Check your email!")
+                        return Pair(
+                            it.status + ". Check your email!",
+                            "Successful. Check your email!"
+                        )
                     else
                         return Pair(it.status, it.message)
                 }
@@ -166,13 +170,37 @@ class DataRepository private constructor(
         return Pair("Fatal error. Failed to reset user password.", null)
     }
 
+    suspend fun apiChangeUserPassword(
+        old_password: String,
+        new_password: String
+    ): Pair<String, String?> {
+        try {
+            val response =
+                service.changeUserPassword(UserChangePasswordRequest(old_password, new_password))
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    return Pair(it.status, null)
+                }
+            }
+
+            return Pair("Failed to change user password", null)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return Pair("Check internet connection. Failed to change user password.", null)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return Pair("Fatal error. Failed to change user password.", null)
+    }
+
     suspend fun apiGeofenceUsers(): String {
         try {
             val response = service.listGeofence()
 
             if (response.isSuccessful) {
                 response.body()?.list?.let {
-                    val users  = it.map {
+                    val users = it.map {
                         UserEntity(
                             it.uid, it.name, it.updated,
                             0.0, 0.0, it.radius, it.photo

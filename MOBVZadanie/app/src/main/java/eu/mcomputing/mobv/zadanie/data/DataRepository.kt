@@ -5,6 +5,7 @@ import eu.mcomputing.mobv.zadanie.data.api.ApiService
 import eu.mcomputing.mobv.zadanie.data.api.model.GeofenceUpdateRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserLoginRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserRegistrationRequest
+import eu.mcomputing.mobv.zadanie.data.api.model.UserResetPasswordRequest
 import eu.mcomputing.mobv.zadanie.data.db.AppRoomDatabase
 import eu.mcomputing.mobv.zadanie.data.db.LocalCache
 import eu.mcomputing.mobv.zadanie.data.db.entities.GeofenceEntity
@@ -51,6 +52,12 @@ class DataRepository private constructor(
             val response = service.registerUser(UserRegistrationRequest(username, email, password))
             if (response.isSuccessful) {
                 response.body()?.let { json_response ->
+                    if (json_response.uid == "-1") {
+                        return Pair("User username already exists!", null)
+                    }
+                    if (json_response.uid == "-2") {
+                        return Pair("User email already exists!", null)
+                    }
                     return Pair(
                         "",
                         User(
@@ -132,6 +139,31 @@ class DataRepository private constructor(
             ex.printStackTrace()
         }
         return Pair("Fatal error. Failed to load user.", null)
+    }
+
+    suspend fun apiResetUserPassword(
+        email: String
+    ): Pair<String, String?> {
+        try {
+            val response = service.resetUserPassword(UserResetPasswordRequest(email))
+
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    if (it.status == "success")
+                        return Pair(it.status + ". Check your email!", "Successful. Check your email!")
+                    else
+                        return Pair(it.status, it.message)
+                }
+            }
+
+            return Pair("Failed to reset user password", null)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return Pair("Check internet connection. Failed to reset user password.", null)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return Pair("Fatal error. Failed to reset user password.", null)
     }
 
     suspend fun apiGeofenceUsers(): String {

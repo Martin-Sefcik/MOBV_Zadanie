@@ -60,15 +60,6 @@
             app:layout_constraintTop_toTopOf="@+id/photo"
             app:layout_constraintVertical_bias="0.5" />
 
-        <TextView
-            android:id="@+id/tv_Email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{model.userResult.email}"
-            app:layout_constraintEnd_toEndOf="@+id/tv_Name"
-            app:layout_constraintStart_toStartOf="@+id/tv_Name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Name"
-            app:layout_constraintVertical_bias="0.1" />
 
         <Button
             android:id="@+id/changePasswordButton"
@@ -76,9 +67,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/change_password"
-            app:layout_constraintEnd_toEndOf="@+id/tv_Email"
-            app:layout_constraintStart_toStartOf="@+id/tv_Email"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Email"
+            app:layout_constraintEnd_toEndOf="@+id/tv_Name"
+            app:layout_constraintStart_toStartOf="@+id/tv_Name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_Name"
             app:layout_constraintVertical_bias="0.1" />
 
         <TextView

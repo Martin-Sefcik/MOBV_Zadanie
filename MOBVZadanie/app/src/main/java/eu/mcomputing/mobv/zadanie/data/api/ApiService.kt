@@ -10,8 +10,10 @@ import eu.mcomputing.mobv.zadanie.data.api.model.LoginResponse
 import eu.mcomputing.mobv.zadanie.data.api.model.RefreshTokenRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.RefreshTokenResponse
 import eu.mcomputing.mobv.zadanie.data.api.model.RegistrationResponse
+import eu.mcomputing.mobv.zadanie.data.api.model.ResetPasswordResponse
 import eu.mcomputing.mobv.zadanie.data.api.model.UserLoginRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserRegistrationRequest
+import eu.mcomputing.mobv.zadanie.data.api.model.UserResetPasswordRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
@@ -36,6 +38,10 @@ interface ApiService {
     suspend fun getUser(
         @Query("id") id: String
     ): Response<UserResponse>
+
+    @POST("user/reset.php")
+    suspend fun resetUserPassword(@Body userInfo: UserResetPasswordRequest
+    ): Response<ResetPasswordResponse>
 
     @POST("user/refresh.php")
     suspend fun refreshToken(

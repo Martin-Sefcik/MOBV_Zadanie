@@ -87,6 +87,9 @@
         <action
             android:id="@+id/action_to_forgetPasswordTwo"
             app:destination="@id/forgotPasswordTwoFragment" />
+        <action
+            android:id="@+id/action_to_login"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment

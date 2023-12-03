@@ -1,5 +1,6 @@
 package eu.mcomputing.mobv.zadanie.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,9 @@ class AuthViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
     private val _userResult = MutableLiveData<User?>()
     val userResult: LiveData<User?> get() = _userResult
+
+    private val _userResetPasswordResult = MutableLiveData<String>()
+    val userResetPasswordResult: LiveData<String> get() = _userResetPasswordResult
 
     val username = MutableLiveData<String>()
     val email = MutableLiveData<String>()
@@ -43,6 +47,14 @@ class AuthViewModel(private val dataRepository: DataRepository) : ViewModel() {
             )
             _loginResult.postValue(result.first ?: "")
             _userResult.postValue(result.second)
+        }
+    }
+
+    fun resetUserPassword() {
+        viewModelScope.launch {
+//            Log.d("Email",email.value ?: "")
+            val result = dataRepository.apiResetUserPassword(email.value ?: "")
+            _userResetPasswordResult.postValue(result.first ?: "")
         }
     }
 

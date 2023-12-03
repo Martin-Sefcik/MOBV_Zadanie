@@ -114,12 +114,12 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             model = viewModel
         }.also { bnd ->
             bnd.bottomBar.setActive(BottomBar.PROFILE)
-            bnd.loadProfileBtn.setOnClickListener {
+//            bnd.loadProfileBtn.setOnClickListener {
                 val user = PreferenceData.getInstance().getUser(requireContext())
                 user?.let {
                     viewModel.loadUser(it.id)
                 }
-            }
+//            }
             bnd.logoutBtn.setOnClickListener {
 //                viewModel.logoutUser()
                 viewModelAuth.logoutUser()
@@ -127,15 +127,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
                 it.findNavController().navigate(R.id.action_profile_intro)
             }
-            viewModel.profileResult.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    Snackbar.make(
-                        bnd.loadProfileBtn,
-                        it,
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                }
-            }
+//            viewModel.profileResult.observe(viewLifecycleOwner) {
+//                if (it.isNotEmpty()) {
+//                    Snackbar.make(
+//                        bnd.loadProfileBtn,
+//                        it,
+//                        Snackbar.LENGTH_SHORT
+//                    ).show()
+//                }
+//            }
             bnd.changePasswordButton.apply {
                 setOnClickListener {
                     findNavController().navigate(R.id.profile_to_changePassword)

@@ -12,32 +12,32 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="@+id/pick_time_button_start"
+        app:layout_constraintStart_toEndOf="@+id/pick_time_button_start">
 
         <TextView
             android:id="@+id/tv_Profile"
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/my_profile"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <Button
+            android:id="@+id/logout_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="Log out"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{model.userResult.username}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Profile" />
-
-        <TextView
-            android:id="@+id/tv_Email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{model.userResult.email}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
 
         <ImageView
             android:id="@+id/photo"
@@ -45,101 +45,122 @@
             android:layout_height="150dp"
             android:padding="15dp"
             android:src="@drawable/ic_profil"
+            app:layout_constraintEnd_toStartOf="@+id/tv_Name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Email" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_Profile" />
+
+        <TextView
+            android:id="@+id/tv_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            android:text="@{model.userResult.username}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/photo"
+            app:layout_constraintTop_toTopOf="@+id/photo"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <TextView
+            android:id="@+id/tv_Email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{model.userResult.email}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_Name"
+            app:layout_constraintStart_toStartOf="@+id/tv_Name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_Name"
+            app:layout_constraintVertical_bias="0.1" />
 
         <Button
-            android:id="@+id/trackButton"
+            android:id="@+id/changePasswordButton"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_end"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/photo" />
+            android:text="@string/change_password"
+            app:layout_constraintEnd_toEndOf="@+id/tv_Email"
+            app:layout_constraintStart_toStartOf="@+id/tv_Email"
+            app:layout_constraintTop_toBottomOf="@+id/tv_Email"
+            app:layout_constraintVertical_bias="0.1" />
 
         <TextView
-            android:id="@+id/label1"
+            android:id="@+id/location_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_time"
+            android:text="Share my location"
+            app:layout_constraintBottom_toBottomOf="@id/location_switch"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trackButton" />
+            app:layout_constraintTop_toTopOf="@id/location_switch" />
 
-        <EditText
-            android:id="@+id/editText1"
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/location_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/changePasswordButton" />
+
+        <Button
+            android:id="@+id/pick_time_button_start"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_start_time"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="PICK START TIME"
+            app:layout_constraintEnd_toStartOf="@+id/pick_time_button_end"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label1" />
+            app:layout_constraintTop_toBottomOf="@+id/location_switch" />
 
         <TextView
-            android:id="@+id/label2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/end_time"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText1" />
-
-        <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/preview_picked_time_textView_start"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_end_time"
+            android:gravity="center"
+            android:text="Not picked"
+            app:layout_constraintEnd_toEndOf="@+id/pick_time_button_start"
+            app:layout_constraintStart_toStartOf="@+id/pick_time_button_start"
+            app:layout_constraintTop_toBottomOf="@+id/pick_time_button_start" />
+
+        <Button
+            android:id="@+id/pick_time_button_end"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="PICK END TIME"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label2" />
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/pick_time_button_start"
+            app:layout_constraintTop_toBottomOf="@+id/location_switch" />
+
+        <TextView
+            android:id="@+id/preview_picked_time_textView_end"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Not picked"
+            app:layout_constraintEnd_toEndOf="@+id/pick_time_button_end"
+            app:layout_constraintStart_toStartOf="@+id/pick_time_button_end"
+            app:layout_constraintTop_toBottomOf="@+id/pick_time_button_end" />
+
 
         <com.mapbox.maps.MapView xmlns:mapbox="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mapView"
-            android:layout_width="300dp"
-            android:layout_height="200dp"
-            mapbox:layout_constraintStart_toStartOf="parent"
-            mapbox:layout_constraintTop_toBottomOf="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
+            mapbox:layout_constraintBottom_toBottomOf="parent"
+            mapbox:layout_constraintBottom_toTopOf="@id/bottom_bar"
+            mapbox:layout_constraintTop_toBottomOf="@+id/preview_picked_time_textView_end"
             mapbox:mapbox_cameraTargetLat="40.7128"
             mapbox:mapbox_cameraTargetLng="-74.0060"
             mapbox:mapbox_cameraZoom="9.0" />
 
-        <Button
-            android:id="@+id/load_profile_btn"
-            android:text="load profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+        <!--        <Button-->
+        <!--            android:id="@+id/load_profile_btn"-->
+        <!--            android:text="load profile"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"/>-->
 
-        <Button
-            android:id="@+id/logout_btn"
-            android:text="Log out"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/load_profile_btn" />
-
-        <Button
-            android:id="@+id/changePasswordButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/change_password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mapView" />
-
-        <TextView
-            android:id="@+id/location_label"
-            android:text="Share my location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/location_switch"
-            app:layout_constraintBottom_toBottomOf="@id/location_switch"
-            app:layout_constraintStart_toStartOf="parent"/>
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:layout_margin="16dp"
-            android:id="@+id/location_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/changePasswordButton"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <eu.mcomputing.mobv.zadanie.widgets.BottomBar
             android:id="@+id/bottom_bar"

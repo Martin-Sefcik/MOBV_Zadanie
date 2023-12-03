@@ -6,30 +6,30 @@
 
     <ImageView
         android:id="@+id/map"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="70dp"
         android:padding="13dp"
-        android:src="@drawable/ic_mapa"
+        android:src="@drawable/ic_map_fin"
         app:layout_constraintEnd_toStartOf="@id/feed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/feed"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="70dp"
         android:padding="13dp"
-        android:src="@drawable/ic_list"
+        android:src="@drawable/ic_list_fin"
         app:layout_constraintEnd_toStartOf="@id/profile"
         app:layout_constraintStart_toEndOf="@id/map"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/profile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="80dp"
+        android:layout_height="70dp"
         android:padding="13dp"
-        android:src="@drawable/ic_profil"
+        android:src="@drawable/ic_profile_fin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/feed"
         app:layout_constraintBottom_toBottomOf="parent" />

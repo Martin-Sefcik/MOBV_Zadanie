@@ -13,51 +13,56 @@
         android:layout_height="match_parent">
 
         <TextView
+            style="@style/Title"
             android:id="@+id/label0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login"
+            app:layout_constraintBottom_toTopOf="@+id/submitButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1"  />
 
-        <TextView
-            android:id="@+id/label1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/username"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label0" />
-
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputFilledStyle"
+            android:layout_margin="10dp"
+            android:paddingTop="30dp"
             android:id="@+id/editText1"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_username"
-            android:text="@={model.username}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label1" />
+            app:layout_constraintTop_toBottomOf="@+id/label0">
 
-        <TextView
-            android:id="@+id/label2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText1" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={model.username}"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputFilledStyle"
+            android:layout_margin="10dp"
             android:id="@+id/editText2"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_password"
-            android:text="@={model.password}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label2" />
+            app:layout_constraintTop_toBottomOf="@+id/editText1">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={model.password}"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_margin="10dp"
             android:id="@+id/forgetLoginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,8 +77,10 @@
             android:text="@string/login"
             android:onClick="@{()->model.loginUser()}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/editText2"
+            app:layout_constraintVertical_bias="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -62,7 +62,12 @@ class SignupFragment : Fragment(R.layout.fragment_signup) {
                     requireView().findNavController().navigate(R.id.action_signup_feed)
                 } ?: PreferenceData.getInstance().putUser(requireContext(), null)
             }
+
+            bnd.loginButton.apply {
+                setOnClickListener {
+                    findNavController().navigate(R.id.action_signup_login)
+                }
+            }
         }
     }
-
 }

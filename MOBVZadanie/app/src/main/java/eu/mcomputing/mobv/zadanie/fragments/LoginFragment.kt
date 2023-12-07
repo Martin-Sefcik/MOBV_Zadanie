@@ -65,6 +65,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     findNavController().navigate(R.id.action_to_forgetPassword)
                 }
             }
+            bnd.signupButton.apply {
+                setOnClickListener{
+                    findNavController().navigate(R.id.action_to_signUp)
+                }
+            }
 
         }
     }

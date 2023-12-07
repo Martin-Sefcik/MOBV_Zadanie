@@ -16,6 +16,11 @@ import eu.mcomputing.mobv.zadanie.data.db.entities.UserEntity
 import java.util.concurrent.Executors
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 
 class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     private var items: List<UserEntity> = listOf()
@@ -32,6 +37,12 @@ class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
 
     // Táto metóda prepojí dáta s ViewHolderom
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
+        holder.itemView.setOnClickListener{
+            Log.d("Item", items[position].uid)
+            val bundle = bundleOf("Name" to items[position].name)
+            Navigation.findNavController(it).navigate(R.id.feed_to_othersProfile, bundle)
+        }
+
         holder.itemView.findViewById<TextView>(R.id.item_text).text = items[position].name
 
         // Declaring and initializing the ImageView
@@ -76,6 +87,7 @@ class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
 //            holder.itemView.findViewById<ImageView>(R.id.item_image). //= items[position].photo
         }
     }
+
 
     // Vracia počet položiek v zozname
     override fun getItemCount() = items.size

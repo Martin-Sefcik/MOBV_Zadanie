@@ -13,20 +13,14 @@
 
         <TextView
             android:id="@+id/tv_Profile"
+            style="@style/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/another_profile"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/his_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Profile" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1"/>
 
         <ImageView
             android:id="@+id/photo"
@@ -35,7 +29,17 @@
             android:padding="15dp"
             android:src="@drawable/ic_profil"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_Name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_Profile" />
+
+        <TextView
+            android:id="@+id/tv_Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/his_name"
+            app:layout_constraintStart_toEndOf="@+id/photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/photo"
+            app:layout_constraintBottom_toBottomOf="@+id/photo"/>
 
         <com.mapbox.maps.MapView xmlns:mapbox="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mapView"

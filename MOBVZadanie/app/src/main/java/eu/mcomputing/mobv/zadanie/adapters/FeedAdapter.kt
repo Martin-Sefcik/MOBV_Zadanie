@@ -39,7 +39,9 @@ class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         holder.itemView.setOnClickListener{
             Log.d("Item", items[position].uid)
-            val bundle = bundleOf("Name" to items[position].name)
+            val bundle = bundleOf("Name" to items[position].name,
+                "Photo" to items[position].photo,
+                "Updated" to items[position].updated)
             Navigation.findNavController(it).navigate(R.id.feed_to_othersProfile, bundle)
         }
 
@@ -63,26 +65,30 @@ class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
         executor.execute {
 
             // Image URL
-            val imageURL = "https://upload.mcomputing.eu/" + items[position].photo
+            if(items[position].photo == ""){
+                imageView.setImageResource(R.drawable.ic_anonym)
+            } else {
+                val imageURL = "https://upload.mcomputing.eu/" + items[position].photo
 
-            // Tries to get the image and post it in the ImageView
-            // with the help of Handler
-            try {
-                val `in` = java.net.URL(imageURL).openStream()
-                image = BitmapFactory.decodeStream(`in`)
+                // Tries to get the image and post it in the ImageView
+                // with the help of Handler
+                try {
+                    val `in` = java.net.URL(imageURL).openStream()
+                    image = BitmapFactory.decodeStream(`in`)
 
-                // Only for making changes in UI
-                handler.post {
-                    imageView.setImageBitmap(image)
+
+                    // Only for making changes in UI
+                    handler.post {
+                        imageView.setImageBitmap(image)
+                    }
+                }
+
+                // If the URL doesnot point to
+                // image or any other kind of failure
+                catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
-
-            // If the URL doesnot point to
-            // image or any other kind of failure
-            catch (e: Exception) {
-                e.printStackTrace()
-            }
-
 
 //            holder.itemView.findViewById<ImageView>(R.id.item_image). //= items[position].photo
         }

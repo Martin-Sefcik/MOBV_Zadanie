@@ -1,5 +1,6 @@
 package eu.mcomputing.mobv.zadanie.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import eu.mcomputing.mobv.zadanie.widgets.BottomBar
@@ -16,6 +18,7 @@ import eu.mcomputing.mobv.zadanie.viewmodels.FeedViewModel
 import eu.mcomputing.mobv.zadanie.R
 import eu.mcomputing.mobv.zadanie.adapters.FeedAdapter
 import eu.mcomputing.mobv.zadanie.data.DataRepository
+import eu.mcomputing.mobv.zadanie.data.PreferenceData
 import eu.mcomputing.mobv.zadanie.databinding.FragmentFeedBinding
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
@@ -48,7 +51,23 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
             lifecycleOwner = viewLifecycleOwner
             model = viewModel
         }.also { bnd ->
+            val sharing = PreferenceData.getInstance().getSharing(requireContext())
+
             bnd.bottomBar.setActive(BottomBar.FEED)
+
+            if (sharing){
+                viewModel.updateItems()
+            } else {
+                viewModel.updateItems()
+                showRecordingDisabledAlert(view)
+            }
+//                viewModel.updateItems()
+//                bnd.sharing.apply {
+//                    setOnClickListener{
+//                        PreferenceData.getInstance().putSharing(requireContext(), true)
+//                    }
+//                }
+//            }
 
             bnd.feedRecyclerview.layoutManager = LinearLayoutManager(context)
             val feedAdapter = FeedAdapter()
@@ -60,17 +79,36 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                 feedAdapter.updateItems(items ?: emptyList())
             }
 
+//            viewModel.updateItems()
+
             bnd.pullRefresh.setOnRefreshListener {
-                viewModel.updateItems()
+//                if (sharing){
+                    viewModel.updateItems()
+//                } else {
+//                    showRecordingDisabledAlert(view)
+//                }
+//                Log.d("Sharing", sharing.toString())
             }
             viewModel.loading.observe(viewLifecycleOwner) {
                 bnd.pullRefresh.isRefreshing = it
             }
-
-//            bnd.btnGenerate.setOnClickListener {
-//                viewModel.updateItems()
-//            }
         }
 
+    }
+
+    private fun showRecordingDisabledAlert(view: View) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Sharing Disabled")
+            .setMessage("Sharing is currently disabled. Do you want to enable it?")
+            .setPositiveButton("Enable") { _, _ ->
+                view.findNavController().navigate(R.id.feed_to_profile)
+//                PreferenceData.getInstance().putSharing(requireContext(), true)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        alertDialog.show()
     }
 }

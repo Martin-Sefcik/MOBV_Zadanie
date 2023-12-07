@@ -54,6 +54,9 @@
         <action
             android:id="@+id/feed_to_othersProfile"
             app:destination="@id/othersProfileFragment" />
+        <action
+            android:id="@+id/feed_to_profile"
+            app:destination="@id/profileFragment" />
     </fragment>
 
     <fragment

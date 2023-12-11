@@ -21,12 +21,14 @@ import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
+import eu.mcomputing.mobv.zadanie.viewmodels.OtherProfileViewModel
 
-class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
+class FeedAdapter (var otherProfileViewModel: OtherProfileViewModel) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     private var items: List<UserEntity> = listOf()
 
     // ViewHolder poskytuje odkazy na zobrazenia v každej položke
     class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
 
     // Táto metóda vytvára nový ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
@@ -38,11 +40,8 @@ class FeedAdapter : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
     // Táto metóda prepojí dáta s ViewHolderom
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         holder.itemView.setOnClickListener{
-            Log.d("Item", items[position].uid)
-            val bundle = bundleOf("Name" to items[position].name,
-                "Photo" to items[position].photo,
-                "Updated" to items[position].updated)
-            Navigation.findNavController(it).navigate(R.id.feed_to_othersProfile, bundle)
+            otherProfileViewModel.uid.value = items[position].uid
+            Navigation.findNavController(it).navigate(R.id.feed_to_othersProfile)
         }
 
         holder.itemView.findViewById<TextView>(R.id.item_text).text = items[position].name

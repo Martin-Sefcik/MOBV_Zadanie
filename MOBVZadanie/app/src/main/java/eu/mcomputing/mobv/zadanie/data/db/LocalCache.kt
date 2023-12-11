@@ -15,7 +15,7 @@ class LocalCache(private val dao: DbDao) {
         }
     }
 
-    fun getUserItem(uid: String): LiveData<UserEntity?> {
+    suspend fun getUserItem(uid: String): UserEntity? {
         return dao.getUserItem(uid)
     }
 

@@ -1,6 +1,7 @@
 package eu.mcomputing.mobv.zadanie.data
 
 import android.content.Context
+import com.mapbox.geojson.Point
 import eu.mcomputing.mobv.zadanie.data.api.ApiService
 import eu.mcomputing.mobv.zadanie.data.api.model.GeofenceUpdateRequest
 import eu.mcomputing.mobv.zadanie.data.api.model.UserChangePasswordRequest
@@ -13,6 +14,10 @@ import eu.mcomputing.mobv.zadanie.data.db.entities.GeofenceEntity
 import eu.mcomputing.mobv.zadanie.data.db.entities.UserEntity
 import eu.mcomputing.mobv.zadanie.data.model.User
 import java.io.IOException
+import java.lang.Math.cos
+import java.lang.Math.sin
+import java.lang.Math.sqrt
+import java.util.Random
 
 class DataRepository private constructor(
     private val service: ApiService,
@@ -194,16 +199,43 @@ class DataRepository private constructor(
         return Pair("Fatal error. Failed to change user password.", null)
     }
 
+    private fun generateRandomPoint(lon: Double?, lat: Double?, radius: Double?): Pair<Double, Double>  {
+        // Convert Radius from meters to degrees.
+
+        val rd = (radius!! / 111000f).toDouble()
+
+        val random = Random()
+        val u = random.nextDouble()
+        val v = random.nextDouble()
+
+        val w = rd * sqrt(u)
+        val t = 2.0 * Math.PI * v
+        val x = w * cos(t)
+        val y = w * sin(t)
+
+        val xp = x / cos(Math.toRadians(lat!!))
+
+        val lonValue = lon!! + xp
+        val latValue = lat + y
+
+        return Pair(latValue, lonValue)
+    }
+
     suspend fun apiGeofenceUsers(): String {
         try {
             val response = service.listGeofence()
 
             if (response.isSuccessful) {
+                val myLat = response.body()?.me?.lat
+                val myLon = response.body()?.me?.lon
+                val myRadius = response.body()?.me?.radius
                 response.body()?.list?.let {
                     val users = it.map {
+                        val randPoint = generateRandomPoint(myLon, myLat, myRadius)
+
                         UserEntity(
                             it.uid, it.name, it.updated,
-                            0.0, 0.0, it.radius, it.photo
+                            randPoint.first, randPoint.second, it.radius, it.photo
                         )
                     }
 
@@ -226,6 +258,7 @@ class DataRepository private constructor(
     fun getUsers() = cache.getUsers()
 
     suspend fun getUsersList() = cache.getUsersList()
+    suspend fun getUser(uid: String) = cache.getUserItem(uid)
 
     suspend fun logoutUser() = cache.logoutUser()
 
@@ -234,6 +267,8 @@ class DataRepository private constructor(
         try {
             val response =
                 service.updateGeofence(GeofenceUpdateRequest(item.lat, item.lon, item.radius))
+
+            apiGeofenceUsers()
 
             if (response.isSuccessful) {
                 response.body()?.let {
@@ -258,6 +293,7 @@ class DataRepository private constructor(
             val response = service.deleteGeofence()
 
             if (response.isSuccessful) {
+                apiGeofenceUsers()
                 response.body()?.let {
                     return
                 }

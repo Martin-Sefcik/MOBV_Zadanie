@@ -5,7 +5,9 @@
     tools:context=".fragments.IntroFragment">
 
     <data>
-
+        <variable
+            name="model"
+            type="eu.mcomputing.mobv.zadanie.viewmodels.OtherProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

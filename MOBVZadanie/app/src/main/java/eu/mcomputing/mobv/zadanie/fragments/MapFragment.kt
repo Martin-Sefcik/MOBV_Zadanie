@@ -1,16 +1,29 @@
 package eu.mcomputing.mobv.zadanie.fragments
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
@@ -19,14 +32,28 @@ import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.CircleAnnotation
 import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationManager
 import com.mapbox.maps.plugin.annotation.generated.CircleAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.OnPointAnnotationClickListener
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
 import com.mapbox.maps.plugin.annotation.generated.createCircleAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.addOnMapClickListener
 import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
+import eu.mcomputing.mobv.zadanie.R
+import eu.mcomputing.mobv.zadanie.data.DataRepository
+import eu.mcomputing.mobv.zadanie.data.PreferenceData
+import eu.mcomputing.mobv.zadanie.data.db.entities.UserEntity
 import eu.mcomputing.mobv.zadanie.databinding.FragmentMapBinding
 import eu.mcomputing.mobv.zadanie.widgets.BottomBar
+import kotlinx.coroutines.launch
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
+import eu.mcomputing.mobv.zadanie.viewmodels.FeedViewModel
+import eu.mcomputing.mobv.zadanie.viewmodels.OtherProfileViewModel
+import eu.mcomputing.mobv.zadanie.viewmodels.ProfileViewModel
 
 
 class MapFragment : Fragment() {
@@ -34,6 +61,8 @@ class MapFragment : Fragment() {
     private var selectedPoint: CircleAnnotation? = null
     private var lastLocation: Point? = null
     private lateinit var annotationManager: CircleAnnotationManager
+    private lateinit var pointAnnotationManager: PointAnnotationManager
+    private lateinit var otherProfileViewModel: OtherProfileViewModel
 
     private val PERMISSIONS_REQUIRED = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
@@ -51,6 +80,16 @@ class MapFragment : Fragment() {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        otherProfileViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return OtherProfileViewModel(DataRepository.getInstance(requireContext())) as T
+            }
+        })[OtherProfileViewModel::class.java]
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,10 +103,18 @@ class MapFragment : Fragment() {
 
         binding.apply {
             lifecycleOwner = viewLifecycleOwner
+            model = otherProfileViewModel
         }.also { bnd ->
             bnd.bottomBar.setActive(BottomBar.MAP)
 
             annotationManager = bnd.mapView.annotations.createCircleAnnotationManager()
+            pointAnnotationManager = bnd.mapView.annotations.createPointAnnotationManager()
+
+            val sharing = PreferenceData.getInstance().getSharing(requireContext())
+            if (!sharing) {
+                showRecordingDisabledAlert(view)
+            }
+
 
             val hasPermission = hasPermissions(requireContext())
             onMapReady(hasPermission)
@@ -78,11 +125,36 @@ class MapFragment : Fragment() {
                         Manifest.permission.ACCESS_FINE_LOCATION
                     )
                 } else {
-                    lastLocation?.let { refreshLocation(it) }
+                    lastLocation?.let {
+                        lifecycleScope.launch {
+                            refreshLocation(it)
+                        }
+                    }
                     addLocationListeners()
                 }
             }
         }
+    }
+
+    private fun showRecordingDisabledAlert(view: View) {
+        val alertDialog = AlertDialog.Builder(requireContext())
+            .setTitle("Sharing Disabled")
+            .setMessage("Sharing is currently disabled. Do you want to enable it?")
+            .setPositiveButton("Enable") { _, _ ->
+                view.findNavController().navigate(R.id.feed_to_profile)
+//                PreferenceData.getInstance().putSharing(requireContext(), true)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+
+        alertDialog.show()
+    }
+
+    suspend fun loadUsers(): List<UserEntity>? {
+        val users = DataRepository.getInstance(requireContext()).getUsersList()
+        return users
     }
 
     private fun onMapReady(enabled: Boolean) {
@@ -111,7 +183,7 @@ class MapFragment : Fragment() {
 
 
     private fun initLocationComponent() {
-        Log.d("MapFragment","initLocationComponent")
+        Log.d("MapFragment", "initLocationComponent")
         val locationComponentPlugin = binding.mapView.location
         locationComponentPlugin.updateSettings {
             this.enabled = true
@@ -130,17 +202,27 @@ class MapFragment : Fragment() {
 
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
 //        Log.d("MapFragment", "poloha je $it")
-        refreshLocation(it)
+        if (lastLocation != it) {
+            lifecycleScope.launch {
+                refreshLocation(it)
+            }
+        }
     }
 
-    private fun refreshLocation(point: Point) {
+    private suspend fun refreshLocation(point: Point) {
         binding.mapView.getMapboxMap()
-            .setCamera(CameraOptions.Builder().center(point).zoom(14.0).build())
+            .setCamera(CameraOptions.Builder().center(point).zoom(16.0).build())
         binding.mapView.gestures.focalPoint =
             binding.mapView.getMapboxMap().pixelForCoordinate(point)
         lastLocation = point
         addMarker(point)
 
+        val users = loadUsers()
+
+        for (item in users!!) {
+            val p = Point.fromLngLat(item.lon, item.lat)
+            addMarkerOtherUsers(p, item.photo, item.uid)
+        }
     }
 
     private fun addMarker(point: Point) {
@@ -149,8 +231,8 @@ class MapFragment : Fragment() {
             annotationManager.deleteAll()
             val pointAnnotationOptions = CircleAnnotationOptions()
                 .withPoint(point)
-                .withCircleRadius(100.0)
-                .withCircleOpacity(0.2)
+                .withCircleRadius(150.0)
+                .withCircleOpacity(0.1)
                 .withCircleColor("#000")
                 .withCircleStrokeWidth(2.0)
                 .withCircleStrokeColor("#ffffff")
@@ -159,6 +241,100 @@ class MapFragment : Fragment() {
             selectedPoint?.let {
                 it.point = point
                 annotationManager.update(it)
+            }
+        }
+    }
+
+    private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
+        convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
+
+    private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
+        if (sourceDrawable == null) {
+            return null
+        }
+        return if (sourceDrawable is BitmapDrawable) {
+            sourceDrawable.bitmap
+        } else {
+// copying drawable object to not manipulate on the same reference
+            val constantState = sourceDrawable.constantState ?: return null
+            val drawable = constantState.newDrawable().mutate()
+            val bitmap: Bitmap = Bitmap.createBitmap(
+                drawable.intrinsicWidth, drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            bitmap
+        }
+    }
+
+    private fun loadBitmapFromUrl(context: Context, imageUrl: String, callback: (Bitmap?) -> Unit) {
+        Picasso.get()
+            .load(imageUrl)
+            .into(object : Target {
+                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                    callback(bitmap)
+                }
+
+                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+                    // Handle the failure if needed
+                    callback(null)
+                }
+
+                override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                }
+            })
+    }
+
+    private fun addMarkerOtherUsers(point: Point, photo: String, uid: String) {
+        // Load the bitmap from the network using Picasso
+        if (photo == "") {
+            val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.ic_anonym)
+            val pointAnnotationOptions = PointAnnotationOptions()
+                .withPoint(point)
+                .withIconImage(bitmap!!)
+                .withTextField(uid)
+                .withTextOpacity(0.0)
+            pointAnnotationManager.create(pointAnnotationOptions)
+            pointAnnotationManager.apply {
+                addClickListener(
+                    OnPointAnnotationClickListener {
+                        otherProfileViewModel.uid.value = it.textField
+                        Navigation.findNavController(requireView()).navigate(R.id.action_map_otherProfile)
+
+                        true
+                    }
+                )
+
+            }
+        } else {
+            loadBitmapFromUrl(
+                requireContext(),
+                "https://upload.mcomputing.eu/$photo"
+            ) { bitmap ->
+                if (bitmap != null) {
+                    // Use the loaded bitmap to create the marker
+                    val pointAnnotationOptions = PointAnnotationOptions()
+                        .withPoint(point)
+                        .withIconImage(bitmap)
+                        .withTextField(uid)
+                        .withIconSize(0.3)
+                        .withTextOpacity(0.0)
+
+                    pointAnnotationManager.create(pointAnnotationOptions)
+
+                    pointAnnotationManager.apply {
+                        addClickListener(
+                            OnPointAnnotationClickListener {
+                                otherProfileViewModel.uid.value = it.textField
+                                Navigation.findNavController(requireView()).navigate(R.id.action_map_otherProfile)
+
+                                true
+                            }
+                        )
+                    }
+                }
             }
         }
     }

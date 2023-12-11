@@ -73,6 +73,9 @@
     <fragment
         android:id="@+id/mapFragment"
         android:name="eu.mcomputing.mobv.zadanie.fragments.MapFragment">
+        <action
+            android:id="@+id/action_map_otherProfile"
+            app:destination="@id/othersProfileFragment" />
     </fragment>
 
     <action

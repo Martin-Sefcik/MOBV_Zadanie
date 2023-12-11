@@ -20,9 +20,13 @@ import eu.mcomputing.mobv.zadanie.adapters.FeedAdapter
 import eu.mcomputing.mobv.zadanie.data.DataRepository
 import eu.mcomputing.mobv.zadanie.data.PreferenceData
 import eu.mcomputing.mobv.zadanie.databinding.FragmentFeedBinding
+import eu.mcomputing.mobv.zadanie.viewmodels.OtherProfileViewModel
+import eu.mcomputing.mobv.zadanie.viewmodels.ProfileViewModel
 
 class FeedFragment : Fragment(R.layout.fragment_feed) {
     private lateinit var viewModel: FeedViewModel
+    private lateinit var profileViewModel: ProfileViewModel
+    private lateinit var otherProfileViewModel: OtherProfileViewModel
     private lateinit var binding: FragmentFeedBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +37,19 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                 return FeedViewModel(DataRepository.getInstance(requireContext())) as T
             }
         })[FeedViewModel::class.java]
+
+        profileViewModel = ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return ProfileViewModel(DataRepository.getInstance(requireContext())) as T
+            }
+        })[ProfileViewModel::class.java]
+
+        otherProfileViewModel =
+            ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return OtherProfileViewModel(DataRepository.getInstance(requireContext())) as T
+                }
+            })[OtherProfileViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -55,22 +72,12 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
 
             bnd.bottomBar.setActive(BottomBar.FEED)
 
-            if (sharing){
-                viewModel.updateItems()
-            } else {
-                viewModel.updateItems()
+            if (!sharing) {
                 showRecordingDisabledAlert(view)
             }
-//                viewModel.updateItems()
-//                bnd.sharing.apply {
-//                    setOnClickListener{
-//                        PreferenceData.getInstance().putSharing(requireContext(), true)
-//                    }
-//                }
-//            }
 
             bnd.feedRecyclerview.layoutManager = LinearLayoutManager(context)
-            val feedAdapter = FeedAdapter()
+            val feedAdapter = FeedAdapter(otherProfileViewModel)
             bnd.feedRecyclerview.adapter = feedAdapter
 
             // Pozorovanie zmeny hodnoty
@@ -79,15 +86,9 @@ class FeedFragment : Fragment(R.layout.fragment_feed) {
                 feedAdapter.updateItems(items ?: emptyList())
             }
 
-//            viewModel.updateItems()
 
             bnd.pullRefresh.setOnRefreshListener {
-//                if (sharing){
-                    viewModel.updateItems()
-//                } else {
-//                    showRecordingDisabledAlert(view)
-//                }
-//                Log.d("Sharing", sharing.toString())
+                viewModel.updateItems()
             }
             viewModel.loading.observe(viewLifecycleOwner) {
                 bnd.pullRefresh.isRefreshing = it

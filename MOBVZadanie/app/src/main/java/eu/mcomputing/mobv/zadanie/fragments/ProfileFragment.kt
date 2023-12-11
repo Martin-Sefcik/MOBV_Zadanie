@@ -144,10 +144,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
 //            }
 
-            otherProfileViewModel.uid.value = user!!.id
-            val userPoint = otherProfileViewModel.loadUser()
-
-
             bnd.logoutBtn.setOnClickListener {
 //                viewModel.logoutUser()
                 viewModelAuth.logoutUser()
@@ -180,13 +176,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
 
-            otherProfileViewModel.otherProfileResult.observe(viewLifecycleOwner) {
-                val point = Point.fromLngLat(it!!.lon, it.lat)
-                binding.mapView.getMapboxMap()
-                    .setCamera(CameraOptions.Builder().center(point).zoom(16.0).build())
-                addMarker(point)
-
-            }
+//            otherProfileViewModel.uid.value = user!!.id
+//            otherProfileViewModel.loadUser()
+//
+//            otherProfileViewModel.otherProfileResult.observe(viewLifecycleOwner) {
+//                val point = Point.fromLngLat(it!!.lon, it.lat)
+//                binding.mapView.getMapboxMap()
+//                    .setCamera(CameraOptions.Builder().center(point).zoom(16.0).build())
+//                addMarker(point)
+//            }
         }
 
     }

@@ -43,7 +43,8 @@ class DataRepository private constructor(
     suspend fun apiRegisterUser(
         username: String,
         email: String,
-        password: String
+        password: String,
+        repeat_password: String
     ): Pair<String, User?> {
         if (username.isEmpty()) {
             return Pair("Username can not be empty", null)
@@ -53,6 +54,12 @@ class DataRepository private constructor(
         }
         if (password.isEmpty()) {
             return Pair("Password can not be empty", null)
+        }
+        if (repeat_password.isEmpty()) {
+            return Pair("Repeat password can not be empty", null)
+        }
+        if (password != repeat_password){
+            return Pair("Passwords must be same", null)
         }
         try {
             val response = service.registerUser(UserRegistrationRequest(username, email, password))
@@ -177,9 +184,13 @@ class DataRepository private constructor(
 
     suspend fun apiChangeUserPassword(
         old_password: String,
-        new_password: String
+        new_password: String,
+        repeat_new_password: String
     ): Pair<String, String?> {
         try {
+            if(new_password != repeat_new_password){
+                return Pair("New password and repeat new password are not same!", null)
+            }
             val response =
                 service.changeUserPassword(UserChangePasswordRequest(old_password, new_password))
 

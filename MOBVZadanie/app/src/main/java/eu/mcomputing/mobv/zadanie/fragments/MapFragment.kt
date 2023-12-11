@@ -107,30 +107,29 @@ class MapFragment : Fragment() {
         }.also { bnd ->
             bnd.bottomBar.setActive(BottomBar.MAP)
 
-            annotationManager = bnd.mapView.annotations.createCircleAnnotationManager()
-            pointAnnotationManager = bnd.mapView.annotations.createPointAnnotationManager()
-
             val sharing = PreferenceData.getInstance().getSharing(requireContext())
             if (!sharing) {
                 showRecordingDisabledAlert(view)
-            }
+            } else {
+                annotationManager = bnd.mapView.annotations.createCircleAnnotationManager()
+                pointAnnotationManager = bnd.mapView.annotations.createPointAnnotationManager()
 
+                val hasPermission = hasPermissions(requireContext())
+                onMapReady(hasPermission)
 
-            val hasPermission = hasPermissions(requireContext())
-            onMapReady(hasPermission)
-
-            bnd.myLocation.setOnClickListener {
-                if (!hasPermissions(requireContext())) {
-                    requestPermissionLauncher.launch(
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    )
-                } else {
-                    lastLocation?.let {
-                        lifecycleScope.launch {
-                            refreshLocation(it)
+                bnd.myLocation.setOnClickListener {
+                    if (!hasPermissions(requireContext())) {
+                        requestPermissionLauncher.launch(
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    } else {
+                        lastLocation?.let {
+                            lifecycleScope.launch {
+                                refreshLocation(it)
+                            }
                         }
+                        addLocationListeners()
                     }
-                    addLocationListeners()
                 }
             }
         }

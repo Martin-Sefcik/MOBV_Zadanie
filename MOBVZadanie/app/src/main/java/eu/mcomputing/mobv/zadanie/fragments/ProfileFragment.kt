@@ -19,6 +19,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -28,6 +32,8 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.LocationServices
 import android.location.Location
+import androidx.annotation.DrawableRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
@@ -38,12 +44,21 @@ import eu.mcomputing.mobv.zadanie.viewmodels.AuthViewModel
 import eu.mcomputing.mobv.zadanie.workers.MyWorker
 import java.util.concurrent.TimeUnit
 import androidx.work.Constraints
+import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationManager
+import com.mapbox.maps.plugin.annotation.generated.PointAnnotationOptions
+import com.mapbox.maps.plugin.annotation.generated.createPointAnnotationManager
+import eu.mcomputing.mobv.zadanie.viewmodels.OtherProfileViewModel
 
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
     private lateinit var viewModel: ProfileViewModel
     private lateinit var viewModelAuth: AuthViewModel
+    private lateinit var otherProfileViewModel: OtherProfileViewModel
     private lateinit var binding: FragmentProfileBinding
+    private lateinit var pointAnnotationManager: PointAnnotationManager
 
     private val PERMISSIONS_REQUIRED = when {
         Build.VERSION.SDK_INT >= 33 -> { // android 13
@@ -96,6 +111,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             }
         })[AuthViewModel::class.java]
 
+        otherProfileViewModel =
+            ViewModelProvider(requireActivity(), object : ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return OtherProfileViewModel(DataRepository.getInstance(requireContext())) as T
+                }
+            })[OtherProfileViewModel::class.java]
+
     }
 
     override fun onCreateView(
@@ -114,12 +136,18 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             model = viewModel
         }.also { bnd ->
             bnd.bottomBar.setActive(BottomBar.PROFILE)
+            pointAnnotationManager = bnd.mapView.annotations.createPointAnnotationManager()
 //            bnd.loadProfileBtn.setOnClickListener {
-                val user = PreferenceData.getInstance().getUser(requireContext())
-                user?.let {
-                    viewModel.loadUser(it.id)
-                }
+            val user = PreferenceData.getInstance().getUser(requireContext())
+            user?.let {
+                viewModel.loadUser(it.id)
+            }
 //            }
+
+            otherProfileViewModel.uid.value = user!!.id
+            val userPoint = otherProfileViewModel.loadUser()
+
+
             bnd.logoutBtn.setOnClickListener {
 //                viewModel.logoutUser()
                 viewModelAuth.logoutUser()
@@ -152,7 +180,48 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 }
             }
 
+            otherProfileViewModel.otherProfileResult.observe(viewLifecycleOwner) {
+                val point = Point.fromLngLat(it!!.lon, it.lat)
+                binding.mapView.getMapboxMap()
+                    .setCamera(CameraOptions.Builder().center(point).zoom(16.0).build())
+                addMarker(point)
+
+            }
         }
+
+    }
+
+    private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
+        convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
+
+    private fun convertDrawableToBitmap(sourceDrawable: Drawable?): Bitmap? {
+        if (sourceDrawable == null) {
+            return null
+        }
+        return if (sourceDrawable is BitmapDrawable) {
+            sourceDrawable.bitmap
+        } else {
+// copying drawable object to not manipulate on the same reference
+            val constantState = sourceDrawable.constantState ?: return null
+            val drawable = constantState.newDrawable().mutate()
+            val bitmap: Bitmap = Bitmap.createBitmap(
+                drawable.intrinsicWidth, drawable.intrinsicHeight,
+                Bitmap.Config.ARGB_8888
+            )
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.width, canvas.height)
+            drawable.draw(canvas)
+            bitmap
+        }
+    }
+
+    private fun addMarker(point: Point) {
+        pointAnnotationManager.deleteAll()
+        val bitmap = bitmapFromDrawableRes(requireContext(), R.drawable.ic_marker)
+        val pointAnnotationOptions = PointAnnotationOptions()
+            .withPoint(point)
+            .withIconImage(bitmap!!)
+        pointAnnotationManager.create(pointAnnotationOptions)
 
     }
 
